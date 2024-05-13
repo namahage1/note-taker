@@ -17,7 +17,10 @@ Provide a short description explaining the what, why, and how of your project. U
 # Render URL : https://note-taker-amn1.onrender.com
 
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+ ![screenshot1](screenshots/index.jpg)
+  ![screenshot4](screenshots/notes.jpg)
+ ![screenshot2](screenshots/addNote.jpg)
+ ![screenshot3](screenshots/note-added.jpg)
+
+    
 

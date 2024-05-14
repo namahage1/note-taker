@@ -6,12 +6,12 @@ const dbJson = require('./db/db.json');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+const { v4: uuidv4 } = require('uuid');
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 app.use(express.static('public'));
-
-
 
 
 app.get('/api/notes',(req,res) =>{
@@ -49,7 +49,7 @@ app.post('/api/notes', (req, res) => {
       const newNote = {
         title,
         text,
-       // review_id: uuid(),
+        id: uuidv4()
       };
   
       // Obtain existing reviews
@@ -87,6 +87,40 @@ app.post('/api/notes', (req, res) => {
     }
   });
   
+  // DELETE route to delete a note by ID
+app.delete('/api/notes/:id', (req, res) => {
+  const idToDelete = req.params.id;
+
+  // Read the contents of the db.json file
+  fs.readFile('./db/db.json', 'utf8', (err, data) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send('Error reading database file.');
+      }
+
+      let notes = JSON.parse(data);
+
+      // Find the index of the note with the matching ID
+      const indexToDelete = notes.findIndex(note => note.id === idToDelete);
+
+      if (indexToDelete === -1) {
+          return res.status(404).send('Note not found');
+      }
+
+      // Remove the note with the matching ID
+      notes.splice(indexToDelete, 1);
+
+      // Write the updated list of notes back to the db.json file
+      fs.writeFile('./db/db.json', JSON.stringify(notes, null, 2), (err) => {
+          if (err) {
+              console.error(err);
+              return res.status(500).send('Error writing to database file.');
+          }
+
+          res.json({ message: 'Note deleted successfully' });
+      });
+  });
+});
 
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT}`)

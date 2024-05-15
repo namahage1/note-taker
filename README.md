@@ -2,8 +2,6 @@
 
 ## Description
 
-Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
-
 - Add a title
 - Note text
 - Clear button and save button show up after typing these above
